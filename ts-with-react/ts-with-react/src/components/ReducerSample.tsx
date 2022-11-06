@@ -1,5 +1,5 @@
 import { useReducer, useContext } from 'react';
-import { SampleStateContext, SampleDispatchContext } from './SampleContext';
+import { SampleStateContext, SampleDispatchContext } from '../store/SampleContext';
 
 
 function ReducerSample() {

@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
+import useDarkMode from '../hooks/useDarkMode'
 
 // type Color = 'red' | 'orange' | 'yellow';
 
@@ -26,8 +27,36 @@ type Action =
         isGood: true,
     }
 
+    type ThemeContext = {
+        theme: Theme;
+        toggleTheme: () => void
+    }
+
+type Theme = typeof lightTheme;
+
+const lightTheme = {
+    body: '#fcfcfc',
+    text: '#363537',
+    toggleBackground: '#fcfcfc',
+    mainColor: '#e6328d',
+    navBar: '#fcfcfc',
+  };
+
+const darkTheme = {
+    body: '#252424',
+    text: '#fcfcfc',
+    toggleBackground: '#3b3b3b',
+    mainColor: '#fcfcfc',
+    navBar: '#303030',
+};
+
+
     export const SampleStateContext = createContext<State>(initState)
     export const SampleDispatchContext = createContext<SampleDispatch>(() => null)
+    export const ThemeDispatchContext = createContext<ThemeContext>({
+        theme: lightTheme,
+        toggleTheme: () => null,
+    });
     
 
     function reducer (state: State, action: Action):State  {
@@ -47,11 +76,14 @@ type Action =
 
 function SampleProvider (props : {children : React.ReactNode}){
         const [state, dispatch] = useReducer(reducer, initState)
+        const {theme , toggleTheme} = useDarkMode();
 
         return (
             <SampleStateContext.Provider value={state}>
                 <SampleDispatchContext.Provider value={dispatch}>
-                    {props.children}
+                    <ThemeDispatchContext.Provider value={{theme, toggleTheme}}>
+                        {props.children}
+                    </ThemeDispatchContext.Provider>
                 </SampleDispatchContext.Provider>
             </SampleStateContext.Provider>
         )

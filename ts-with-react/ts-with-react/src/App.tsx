@@ -1,26 +1,33 @@
 import React from 'react';
-import Counter from './components/Counter';
+import MainPage from './components/MainPage';
 import MyForm from './components/MyForm';
 import NewCounter from './components/NewCounter';
 import ReducerSample from './components/ReducerSample';
-import SampleProvider from './components/SampleContext';
+import SampleProvider from './store/SampleContext';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
+
 
 interface Form {
   name: string;
   description: string;
 }
 
-function App(){
+
+function App():JSX.Element{
   const onSubmit = (form: Form) =>  console.log(form);
+
   return (
-    <div className="App">
-      <Counter/>
-      <MyForm onSubmit={onSubmit}/>
-      <NewCounter/>
-      <SampleProvider>
-        <ReducerSample/>
-      </SampleProvider>
-    </div>
+    <SampleProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage/>}/>
+          <Route path="/login" element={<MyForm onSubmit={onSubmit}/>}/>
+          <Route path="/counter" element={<NewCounter/>}/>
+            <Route path="/reducer" element={<ReducerSample/>}/>
+        </Routes>
+      </BrowserRouter>
+    </SampleProvider>
+      
   );
 }
 
