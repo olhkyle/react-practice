@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 import Nav from './Nav'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { colorState } from '../store/ColorContext'
-import Logout from './Logout'
 
 function MyForm() {
   const color = useRecoilValue<string | undefined>(colorState)
+
   const [inputContent, setInputContent] = useState({
     id: '',
     pw: '',
@@ -45,19 +44,17 @@ function MyForm() {
             onChange={handleChange}
             maxLength={12}
           />
-          {/* <Link to="/main"> */}
           <SubmitButton
             type="submit"
             value="로그인"
             onClick={() => {
-              if (inputContent.id !== '1234' && inputContent.pw !== '1234') {
+              if (inputContent.id !== '1234' || inputContent.pw !== '1234') {
                 alert('you are not permitted')
                 return
               }
               navigate('/main')
             }}
           />
-          {/* </Link> */}
         </Form>
       </Block>
     </>

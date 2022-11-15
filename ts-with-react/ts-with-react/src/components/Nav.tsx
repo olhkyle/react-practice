@@ -6,6 +6,7 @@ import { colorState } from '../store/ColorContext'
 
 function Nav() {
   const [color, setColor] = useRecoilState(colorState)
+
   const navigate = useNavigate()
 
   const onChange = (e: React.MouseEvent<HTMLDivElement>) => {
