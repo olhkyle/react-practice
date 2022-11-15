@@ -1,74 +1,122 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import Nav from './Nav'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import { colorState } from '../store/ColorContext'
+import Logout from './Logout'
 
-interface MyFormProps {
-    onSubmit: (form : { name : string; description:string}) => void;
+function MyForm() {
+  const color = useRecoilValue<string | undefined>(colorState)
+  const [inputContent, setInputContent] = useState({
+    id: '',
+    pw: '',
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(inputContent)
+    setInputContent({ ...inputContent, [e.target.id]: e.target.value })
+  }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+  }
+
+  const navigate = useNavigate()
+  return (
+    <>
+      <Nav />
+      <Block color={color}>
+        <Form onSubmit={handleSubmit}>
+          <Label htmlFor="id">ID</Label>
+          <InputId
+            type="text"
+            value={inputContent.id}
+            id="id"
+            placeholder="아이디"
+            onChange={handleChange}
+          />
+          <Label htmlFor="pw">PW</Label>
+          <InputPassWord
+            type="text"
+            id="pw"
+            placeholder="비밀번호"
+            value={inputContent.pw}
+            onChange={handleChange}
+            maxLength={12}
+          />
+          {/* <Link to="/main"> */}
+          <SubmitButton
+            type="submit"
+            value="로그인"
+            onClick={() => {
+              if (inputContent.id !== '1234' && inputContent.pw !== '1234') {
+                alert('you are not permitted')
+                return
+              }
+              navigate('/main')
+            }}
+          />
+          {/* </Link> */}
+        </Form>
+      </Block>
+    </>
+  )
 }
 
-function MyForm(props:MyFormProps) {
+export default MyForm
 
-    const navigate = useNavigate();
-    const [formel, setForm] = useState({
-        name: '',
-        description: '',
-    });
-
-    const { onSubmit } = props;
-
-    const { name, description } = formel;
-    // console.log(form);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({
-            ...formel , [e.target.name] : e.target.value
-        })
-    }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        onSubmit(formel);
-        setForm({
-            name: '',
-            description: ''
-        })
-    }
-
-    return (
-        <>
-            <h1>Login Page</h1>
-            <h3 onClick={() => navigate('/')}>logo</h3>
-            {formel.name}
-            <Form onSubmit={handleSubmit}>
-                <Input type="text" name="name" value={name} placeholder="Put your Id" onChange={handleChange}/>
-                <Input type="text" name="description" value={description} placeholder="Put your PW" onChange={handleChange}/>
-                <Button type="submit">로그인</Button>
-            </Form>
-        </>
-    )
-}
-
-export default MyForm;
+const Block = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  ${({ color }) => color && `background-color : ${color}`};
+`
 
 const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width : 300px;
-    
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  width: 300px;
+  border-radius: 1rem;
+  background-color: #fff;
 `
 
-const Input = styled.input`
-    margin-bottom: 20px;
-    padding: 5px 20px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
+const Label = styled.label`
+  font-size: 0.9rem;
+  font-weight: 600;
 `
 
-const Button = styled.button`
-    padding: 5px 10px;
-    width: 200px;
-    border: 1px solid #e5e5e5;
-    border-radius: 20px;
-    outline: none;
-    background-color: #e5e5e5;
+const InputId = styled.input`
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 1rem;
+  &:focus {
+    border: 1px solid #ffa000;
+  }
+`
+
+const InputPassWord = styled.input`
+  margin-bottom: 1.2rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 1rem;
+  &:focus {
+    border: 1px solid #ffa000;
+  }
+`
+
+const SubmitButton = styled.input`
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 1rem;
+
+  &:hover {
+    background-color: #ffa000;
+    color: #fff;
+  }
 `

@@ -1,34 +1,35 @@
-import React from 'react';
-import MainPage from './components/MainPage';
-import MyForm from './components/MyForm';
-import NewCounter from './components/NewCounter';
-import ReducerSample from './components/ReducerSample';
-import SampleProvider from './store/SampleContext';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import React from 'react'
+import styled from 'styled-components'
+import { RecoilRoot } from 'recoil'
+import MyForm from './components/MyForm'
+import Main from './components/Main'
+import GlobalStyle from './lib/GlobalStyle'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Profile from './components/Profile'
 
-
-interface Form {
-  name: string;
-  description: string;
-}
-
-
-function App():JSX.Element{
-  const onSubmit = (form: Form) =>  console.log(form);
-
+function App(): JSX.Element {
   return (
-    <SampleProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage/>}/>
-          <Route path="/login" element={<MyForm onSubmit={onSubmit}/>}/>
-          <Route path="/counter" element={<NewCounter/>}/>
-            <Route path="/reducer" element={<ReducerSample/>}/>
-        </Routes>
-      </BrowserRouter>
-    </SampleProvider>
-      
-  );
+    <RecoilRoot>
+      <GlobalStyle />
+      <Block>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MyForm />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </BrowserRouter>
+      </Block>
+    </RecoilRoot>
+  )
 }
 
-export default App;
+export default App
+
+const Block = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+`

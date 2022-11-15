@@ -1,59 +1,59 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom'
-import styled from 'styled-components';
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import styled, { css } from 'styled-components'
+import { useRecoilState } from 'recoil'
+import { colorState } from '../store/ColorContext'
 
 function Nav() {
-    const navList = [
-        {   
-            id: 1,
-            name: 'login'
-        },
-        {
-            id: 2,
-            name: 'counter',
-        },
-        {
-            id: 3,
-            name: 'reducer',
-        }
-    ]
+  const [color, setColor] = useRecoilState(colorState)
+  const navigate = useNavigate()
 
-    return (
-        <>
-            <Ul>
-                {navList.map(nav => (
-
-                        <Li key={nav.id}>
-                            <StyledLink to={`/${nav.name}`}>
-                                {nav.name}
-                            </StyledLink>
-                        </Li>
-                ))}
-            </Ul>
-        </>
-    );
+  const onChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (color === '#FBFBFE') {
+      setColor('#ffa000')
+    } else {
+      setColor('#FBFBFE')
+    }
+  }
+  // console.log(color)
+  return (
+    <>
+      <Block name="home">
+        <NavEl onClick={() => navigate('/main')}>Home</NavEl>
+        <NavEl onClick={onChange}>💡</NavEl>
+        <NavEl onClick={() => navigate('/profile')}>Profile</NavEl>
+      </Block>
+    </>
+  )
 }
 
-export default Nav;
+export default Nav
 
-const Ul = styled.ul`
-    display: flex;
-    align-items: center;
+const Block = styled.div<{ name: string }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+  width: 100%;
+  height: 3rem;
+  border-bottom: 1px solid #e5e5e5;
+  ${props =>
+    props.name === 'Login' &&
+    css`
+      margin-bottom: 180px;
+    `}
 `
 
-const Li = styled.li`
-    list-style-type: none;
-    padding-left: 0;
-    margin-right: 50px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    cursor: pointer;
-`
+const NavEl = styled.div`
+  padding: 0.25rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 1rem;
+  cursor: pointer;
 
-const StyledLink = styled(Link)`
-color: #1dc078;
-text-decoration:none;
-&:hover {
-    color: #e5e5e5;
-}
+  &:hover {
+    color: #fff;
+    background-color: #ffa000;
+  }
 `
