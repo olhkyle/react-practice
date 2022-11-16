@@ -1,6 +1,6 @@
 import TodoItem from '../ListItem/TodoItem'
 import styles from './TodoList.module.css'
-import { TodoType } from '../App'
+import { TodoType } from '../Todo/todoReducer'
 
 interface TodoProps {
   todos: TodoType[]
