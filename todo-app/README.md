@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -43,4 +43,8 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To learn React, check out the [React documentation](https://reactjs.org/). -->
+
+# React를 활용한 TodoListApp 구현하기
+
+<img width="684" alt="스크린샷 2022-11-16 오후 10 52 28" src="https://user-images.githubusercontent.com/99726297/202198730-1e7fed87-8c33-4464-bd16-108f6cc51a69.png">
