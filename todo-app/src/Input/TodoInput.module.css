@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+}
+
+.formContainer {
+  display: flex;
+  flex: 1; /*가로를 꽉 채우기 위한 용도*/
+}
+
+.input {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1.25rem;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px 0 0 4px;
+}
+
+.input::placeholder {
+  font-size: 1rem;
+}
+
+.enter {
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border: 1px solid #c0c0c0;
+  border-left: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}

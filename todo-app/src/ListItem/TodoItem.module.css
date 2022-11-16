@@ -1,0 +1,43 @@
+.liElement {
+  margin: 1rem 0;
+  padding: 1.125rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;
+}
+
+.liElement:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.liElement:hover .removeIcon {
+  visibility: visible;
+}
+
+.checkIcon {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.checkedCircleIcon {
+  color: #32cd32;
+}
+
+.unCheckedCircleIcon {
+  color: #c0c0c0;
+}
+
+.removeIcon {
+  font-size: 28px;
+  margin-left: auto;
+  color: red;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.linethrough {
+  text-decoration: line-through;
+  color: #c0c0c0;
+}
