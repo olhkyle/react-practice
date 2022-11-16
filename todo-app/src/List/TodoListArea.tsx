@@ -1,10 +1,14 @@
+import { useTodoState } from '../Todo/TodoProvider'
+
 interface TodoListProps {
   children: React.ReactNode
-  todoCount: number
+  // todoCount: number
 }
 
 function TodoListArea(props: TodoListProps) {
-  if (props.todoCount < 1) {
+  const todoState = useTodoState()
+
+  if (todoState.todos.length < 1) {
     return null
   }
   return <>{props.children}</>

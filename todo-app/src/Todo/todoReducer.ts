@@ -1,3 +1,5 @@
+import { saveTodos } from './todoStorage'
+
 export interface TodoType {
   id: number
   text: string
@@ -18,37 +20,55 @@ type TodoActionType =
 
 export function todoReducer(state: TodoStateType, action: TodoActionType) {
   switch (action.type) {
-    case 'add':
+    case 'add': {
+      const newTodos = state.todos.concat({
+        id: Date.now(),
+        text: action.payload.text,
+        isChecked: false,
+      })
+      saveTodos(newTodos)
       return {
-        todos: state.todos.concat({ id: Date.now(), text: action.payload.text, isChecked: false }),
+        todos: newTodos,
       }
-    case 'remove':
+    }
+    case 'remove': {
+      const newTodos = state.todos.filter(todo => {
+        return todo.id !== action.payload.id
+      })
+      saveTodos(newTodos)
       return {
-        todos: state.todos.filter(todo => {
-          return todo.id !== action.payload.id
-        }),
+        todos: newTodos,
       }
-    case 'checked':
-      return {
-        todos: state.todos.map(todo => {
-          if (todo.id === action.payload.id) {
-            return {
-              ...todo,
-              isChecked: !todo.isChecked,
-            }
+    }
+    case 'checked': {
+      const newTodos = state.todos.map(todo => {
+        if (todo.id === action.payload.id) {
+          return {
+            ...todo,
+            isChecked: !todo.isChecked,
           }
-          return todo
-        }),
-      }
-    case 'allChecked':
+        }
+        return todo
+      })
+      saveTodos(newTodos)
       return {
-        todos: state.todos.map(todo => {
-          return { ...todo, isChecked: !action.payload }
-        }),
+        todos: newTodos,
       }
-    case 'allRemove':
+    }
+    case 'allChecked': {
+      const newTodos = state.todos.map(todo => {
+        return { ...todo, isChecked: !action.payload }
+      })
+      saveTodos(newTodos)
+      return {
+        todos: newTodos,
+      }
+    }
+    case 'allRemove': {
+      saveTodos([])
       return {
         todos: [],
       }
+    }
   }
 }

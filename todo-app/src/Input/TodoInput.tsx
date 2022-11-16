@@ -1,27 +1,68 @@
 import React from 'react'
 import { RiChatNewLine } from 'react-icons/ri'
+import { useInputTodoDispatch, useInputTodoState, useTodoDispatch } from '../Todo/TodoProvider'
 import styles from './TodoInput.module.css'
 
-interface TodoInputProps {
-  text: string
-  onTextChange: (text: string) => void
-  onSubmit: () => void
-}
+// interface TodoInputProps {
+//   text: string
+//   onTextChange: (text: string) => void
+//   onSubmit: () => void
+// }
 
-function TodoInput({ text, onTextChange, onSubmit }: TodoInputProps) {
+// const handleTextChange = (text: string) => {
+//   inputDispatch({ type: 'change', payload: text })
+// }
+
+// const handleSubmit = () => {
+//   if (!inputState.text) {
+//     return
+//   }
+//   // const newTodos = todos.concat({ id: Date.now(), text: inputState.text, isChecked: false })
+//   // setTodos([...todos, { id: Date.now(), text: text, isChecked: true }])
+//   // setTodos(newTodos)
+//   todosDispatch({
+//     type: 'add',
+//     payload: {
+//       text: inputState.text,
+//     },
+//   })
+//   inputDispatch({ type: 'clear' })
+//   console.log('submit')
+// }
+
+function TodoInput() {
+  const todoDispatch = useTodoDispatch()
+  const inputDispatch = useInputTodoDispatch()
+  const inputState = useInputTodoState()
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onTextChange(e.target.value)
+    inputDispatch({
+      type: 'change',
+      payload: e.target.value,
+    })
+    // onTextChange(e.target.value)
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit()
+    if (!inputState.text) {
+      return
+    }
+    todoDispatch({
+      type: 'add',
+      payload: {
+        text: inputState.text,
+      },
+    })
+    inputDispatch({ type: 'clear' })
+    console.log('submit')
+    // onSubmit()
   }
 
   return (
     <section className={styles.container}>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <input
-          value={text}
+          value={inputState.text}
           onChange={handleInputChange}
           className={styles.input}
           placeholder={'해야할 일 추가'}
