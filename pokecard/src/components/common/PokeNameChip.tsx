@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 
-function PokeNameChip() {
+function PokeNameChip({ name }: { name: string }) {
   return (
     <Chip>
       <Number>001</Number>
-      <ChipText>이상해씨</ChipText>
+      <ChipText>{name}</ChipText>
     </Chip>
   )
 }
