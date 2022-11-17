@@ -1,5 +1,8 @@
 import styled from '@emotion/styled'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { fetchPokemonDetail, PokemonDetailType } from '../../service/pokemonService'
 import PokeMarkChip from '../common/PokeMarkChip'
 import PokeNameChip from '../common/PokeNameChip'
 
@@ -12,17 +15,33 @@ interface PokeCardProps {
 
 function PokeCard({ name }: PokeCardProps) {
   const navigate = useNavigate()
+  const [pokemons, setPokemons] = useState<PokemonDetailType | null>(null)
 
   const handleClick = () => {
     navigate(`/pokemon/${name}`)
   }
+
+  useEffect(() => {
+    ;(async () => {
+      const detail = await fetchPokemonDetail(name)
+      setTimeout(() => {
+        setPokemons(detail)
+      }, 2000)
+    })()
+  }, [name])
+
+  if (!pokemons) {
+    return <h1>it's loading</h1>
+  }
+
+  // console.log(pokemons)
   return (
     <Item onClick={handleClick}>
       <Header>
-        <PokeNameChip name={name} />
+        <PokeNameChip name={pokemons.name} id={pokemons.id} />
       </Header>
       <Body>
-        <Image src={tempImgUrl} alt="피카츄" />
+        <Image src={pokemons.images.dreamWorldFront} alt={pokemons.name} />
       </Body>
       <Footer>
         <PokeMarkChip />
