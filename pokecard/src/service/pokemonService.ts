@@ -76,7 +76,7 @@ const remote = axios.create()
 
 // PokeCardList.tsx에 보낼 데이터 -> 카드별 이름, Url
 // https://pokeapi.co/api/v2/pokemon
-export const fetchPokemons = async (nextUrl?: string) => {
+export const fetchPokemonsAPI = async (nextUrl?: string) => {
   const requestUrl = nextUrl ? nextUrl : 'https://pokeapi.co/api/v2/pokemon'
   // post, get, put, delete
   const res = await remote.get<PokemonListResponseType>(requestUrl) // promise로 반환하기 때문에

@@ -2,9 +2,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import { imageTypeReducer } from './imageTypeSlice'
+import { pokemonsReducer } from './pokemonSlice'
 
 export const store = configureStore({
-  reducer: { imageType: imageTypeReducer },
+  reducer: { imageType: imageTypeReducer, pokemons: pokemonsReducer },
 })
 
 export type RootState = ReturnType<typeof store.getState>

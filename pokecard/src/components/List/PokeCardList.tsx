@@ -1,25 +1,31 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
-import { fetchPokemons, PokemonListResponseType } from '../../service/pokemonService'
+import { useSelector } from 'react-redux'
+import { fetchPokemonsAPI, PokemonListResponseType } from '../../service/pokemonService'
+import { RootState, useAppDispatch } from '../../store'
+import { fetchPokemons } from '../../store/pokemonSlice'
 import PokeCard from './PokeCard'
 
 function PokeCardList() {
-  const [pokemons, setPokemons] = useState<PokemonListResponseType>({
-    count: 0,
-    next: '',
-    results: [],
-  })
+  const dispatch = useAppDispatch()
+  const { pokemons } = useSelector((state: RootState) => state.pokemons)
+  // const [pokemons, setPokemons] = useState<PokemonListResponseType>({
+  //   count: 0,
+  //   next: '',
+  //   results: [],
+  // })
 
   const [infiniteRef] = useInfiniteScroll({
     loading: false,
     hasNextPage: pokemons.next !== '',
     onLoadMore: async () => {
-      const moreLoadPokemons = await fetchPokemons(pokemons.next)
-      setPokemons({
-        ...moreLoadPokemons,
-        results: [...pokemons.results, ...moreLoadPokemons.results],
-      })
+      // const moreLoadPokemons = await fetchPokemonsAPI(pokemons.next)
+      // setPokemons({
+      //   ...moreLoadPokemons,
+      //   results: [...pokemons.results, ...moreLoadPokemons.results],
+      // })
+      dispatch(fetchPokemons(pokemons.next))
       console.log('more')
     },
     // When there is an error, we stop infinite loading.
@@ -32,11 +38,12 @@ function PokeCardList() {
   })
 
   useEffect(() => {
-    ;(async () => {
-      const result = await fetchPokemons()
-      setPokemons(result)
-      // console.log(result)
-    })()
+    dispatch(fetchPokemons())
+    // ;(async () => {
+    //   const result = await fetchPokemonsAPI()
+    //   setPokemons(result)
+    //   // console.log(result)
+    // })()
   }, [])
 
   console.log(pokemons)
