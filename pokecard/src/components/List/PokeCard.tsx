@@ -1,11 +1,13 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { useEffect } from 'react'
+
 import { useIntersectionObserver } from 'react-intersection-observer-hook'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { fetchPokemonDetail, PokemonDetailType } from '../../service/pokemonService'
-import { RootState } from '../../store'
+// import { fetchPokemonDetail, PokemonDetailType } from '../../service/pokemonService'
+import { RootState, useAppDispatch } from '../../store'
+import { fetchPokemonDetail } from '../../store/pokemonDetailSlice'
 import { PokeImageSkeleton } from '../common/PokeImageSkeleton'
 import PokeMarkChip from '../common/PokeMarkChip'
 import PokeNameChip from '../common/PokeNameChip'
@@ -16,9 +18,12 @@ interface PokeCardProps {
 
 function PokeCard({ name }: PokeCardProps) {
   const navigate = useNavigate()
-  const [pokemons, setPokemons] = useState<PokemonDetailType | null>(null)
+  // const [pokemons, setPokemons] = useState<PokemonDetailType | null>(null)
 
   const imageType = useSelector((state: RootState) => state.imageType.type)
+  const dispatch = useAppDispatch()
+  const { pokemonDetails } = useSelector((state: RootState) => state.pokemonDetail)
+  const pokemon = pokemonDetails[name]
 
   const [ref, { entry }] = useIntersectionObserver()
   const isVisible = entry && entry.isIntersecting
@@ -31,15 +36,16 @@ function PokeCard({ name }: PokeCardProps) {
     if (!isVisible) {
       return
     }
-    ;(async () => {
-      const detail = await fetchPokemonDetail(name)
-      setTimeout(() => {
-        setPokemons(detail)
-      }, 1000)
-    })()
-  }, [name, isVisible])
+    // ;(async () => {
+    //   const detail = await fetchPokemonDetail(name)
+    //   setTimeout(() => {
+    //     setPokemons(detail)
+    //   }, 1000)
+    // })()
+    dispatch(fetchPokemonDetail(name))
+  }, [dispatch, name, isVisible])
 
-  if (!pokemons) {
+  if (!pokemon) {
     return (
       <Item color={'#ffca09'} ref={ref}>
         <Header>
@@ -57,12 +63,12 @@ function PokeCard({ name }: PokeCardProps) {
 
   // console.log(pokemons.color)
   return (
-    <Item onClick={handleClick} color={pokemons.color} ref={ref}>
+    <Item onClick={handleClick} color={pokemon.color} ref={ref}>
       <Header>
-        <PokeNameChip name={pokemons.koreanName} id={pokemons.id} color={pokemons.color} />
+        <PokeNameChip name={pokemon.koreanName} id={pokemon.id} color={pokemon.color} />
       </Header>
       <Body>
-        <Image src={pokemons.images[imageType]} alt={pokemons.name} />
+        <Image src={pokemon.images[imageType]} alt={pokemon.name} />
       </Body>
       <Footer>
         <PokeMarkChip />

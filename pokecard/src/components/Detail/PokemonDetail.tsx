@@ -3,34 +3,38 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { fetchPokemonDetail, PokemonDetailType } from '../../service/pokemonService'
-import { RootState } from '../../store'
+import { PokemonDetailType } from '../../service/pokemonService'
+import { RootState, useAppDispatch } from '../../store'
+import { fetchPokemonDetail } from '../../store/pokemonDetailSlice'
 import { PokeImageSkeleton } from '../common/PokeImageSkeleton'
 import PokeMarkChip from '../common/PokeMarkChip'
 
 function PokemonDetail() {
-  const [pokemons, setPokemons] = useState<PokemonDetailType | null>(null)
-  const imageType = useSelector((state: RootState) => state.imageType.type)
-
   const { name } = useParams()
+  // const [pokemons, setPokemons] = useState<PokemonDetailType | null>(null)
+  const imageType = useSelector((state: RootState) => state.imageType.type)
+  const pokemonDetails = useSelector((state: RootState) => state.pokemonDetail.pokemonDetails)
+  const pokemon = name ? pokemonDetails[name] : null
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (!name) {
       return
     }
-    ;(async () => {
-      const detail = await fetchPokemonDetail(name)
-      setTimeout(() => {
-        setPokemons(detail)
-      }, 1000)
-    })()
-  }, [name])
+    // ;(async () => {
+    //   const detail = await fetchPokemonDetail(name)
+    //   setTimeout(() => {
+    //     setPokemons(detail)
+    //   }, 1000)
+    // })()
+    dispatch(fetchPokemonDetail(name))
+  }, [name, dispatch])
 
   if (!name) {
     return null // name이 없을 때
   }
 
-  if (!pokemons) {
+  if (!pokemon) {
     return (
       <Container>
         <ImageContainer>
@@ -47,7 +51,7 @@ function PokemonDetail() {
   return (
     <Container>
       <ImageContainer>
-        <Image src={pokemons.images[imageType]} alt={pokemons.koreanName} />
+        <Image src={pokemon.images[imageType]} alt={pokemon.koreanName} />
       </ImageContainer>
       <Divider />
       <Body>
@@ -56,30 +60,30 @@ function PokemonDetail() {
           <tbody>
             <TableRow>
               <TableHeader>번호</TableHeader>
-              <td>{pokemons.id}</td>
+              <td>{pokemon.id}</td>
             </TableRow>
             <TableRow>
               <TableHeader>이름</TableHeader>
-              <td>{`${pokemons.koreanName}(${pokemons.name})`}</td>
+              <td>{`${pokemon.koreanName}(${pokemon.name})`}</td>
             </TableRow>
             <TableRow>
               <TableHeader>타입</TableHeader>
-              <td>{pokemons.types.toString()}</td>
+              <td>{pokemon.types.toString()}</td>
             </TableRow>
             <TableRow>
               <TableHeader>키</TableHeader>
-              <td>{pokemons.height}m</td>
+              <td>{pokemon.height}m</td>
             </TableRow>
             <TableRow>
               <TableHeader>몸무게</TableHeader>
-              <td>{pokemons.weight}kg</td>
+              <td>{pokemon.weight}kg</td>
             </TableRow>
           </tbody>
         </Table>
         <DetailTitle>능력치</DetailTitle>
         <Table>
           <tbody>
-            {pokemons.baseStats.map((stat, idx) => (
+            {pokemon.baseStats.map((stat, idx) => (
               <TableRow key={`${stat.name}_${idx}`}>
                 <TableHeader>{stat.name}</TableHeader>
                 <td>{stat.value}</td>

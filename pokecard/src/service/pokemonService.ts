@@ -84,7 +84,7 @@ export const fetchPokemonsAPI = async (nextUrl?: string) => {
 }
 
 // PokeCard.tsx에 뿌리기 -> 카드별 데이터 세부 사항(이미지, 번호, 이름, hp, 등등)
-export const fetchPokemonDetail = async (name: string): Promise<PokemonDetailType> => {
+export const fetchPokemonDetailAPI = async (name: string): Promise<PokemonDetailType> => {
   const pokemonDetailUrl = `https://pokeapi.co/api/v2/pokemon/${name}`
   const pokemonSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${name}`
 
