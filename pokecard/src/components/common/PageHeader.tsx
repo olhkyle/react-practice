@@ -6,7 +6,7 @@ import { POKEMON_IMAGE_TYPE } from '../../constants'
 import { RootState, useAppDispatch } from '../../store'
 import { changeImageType, PokemonImageKeyType } from '../../store/imageTypeSlice'
 
-function PageHeader() {
+function PageHeader(): JSX.Element {
   const type = useSelector((state: RootState) => state.imageType.type)
   const dispatch = useAppDispatch()
 
