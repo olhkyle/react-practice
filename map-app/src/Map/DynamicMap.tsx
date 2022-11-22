@@ -1,30 +1,42 @@
-import { useEffect, useRef } from 'react';
-import styled from '@emotion/styled';
+import { useEffect, useRef } from 'react'
+import styled from '@emotion/styled'
+import { useState } from 'react'
+import { KaKaoMapContext } from '../hooks/useMap'
 
-const DynamicMap = () => {
-  const kakaoMapRef = useRef<HTMLDivElement>(null);
+interface DynamicMapType {
+  children: React.ReactNode
+}
+
+const DynamicMap = ({ children }: DynamicMapType) => {
+  const [map, setMap] = useState<kakao.maps.Map>()
+  const kakaoMapRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!kakaoMapRef.current) {
-      return;
+      return
     }
-    const targetPoint = new kakao.maps.LatLng(33.450701, 126.570667);
+    const targetPoint = new kakao.maps.LatLng(33.450701, 126.570667)
     const options = {
       level: 3,
       center: targetPoint,
-    };
+    }
 
-    new window.kakao.maps.Map(kakaoMapRef.current, options);
-  }, []);
+    new window.kakao.maps.Map(kakaoMapRef.current, options)
+  }, [])
   return (
     <M.Container>
       <M.Map ref={kakaoMapRef} />
+      {map ? (
+        <KaKaoMapContext.Provider value={map}>{children}</KaKaoMapContext.Provider>
+      ) : (
+        <div> 지도 정보를 가져오는데 실패하였습니다.</div>
+      )}
     </M.Container>
-  );
-};
+  )
+}
 
-export default DynamicMap;
+export default DynamicMap
 
-const M: any = {};
+const M: any = {}
 
 M.Container = styled.div`
   position: absolute;
@@ -32,10 +44,10 @@ M.Container = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-`;
+`
 
 M.Map = styled.div`
   position: static;
   width: 100%;
   height: 100%;
-`;
+`

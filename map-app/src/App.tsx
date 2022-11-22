@@ -1,18 +1,17 @@
-import DynamicMap from "./Map/DynamicMap";
-import KakaoMapScriptLoader from "./Map/KakaoMapScriptLoader";
-import SearchLocation from "./Map/SearchLocation";
+import DynamicMap from './Map/DynamicMap'
+import KakaoMapScriptLoader from './Map/KakaoMapScriptLoader'
+import SearchLocation from './Map/SearchLocation'
 
-
-function App():JSX.Element {
+function App(): JSX.Element {
   return (
     <>
-    <KakaoMapScriptLoader>
-      <DynamicMap/>
-      <SearchLocation/>
-    </KakaoMapScriptLoader>
-
-  </>
-  );
+      <KakaoMapScriptLoader>
+        <DynamicMap>
+          <SearchLocation />
+        </DynamicMap>
+      </KakaoMapScriptLoader>
+    </>
+  )
 }
 
-export default App;
+export default App
