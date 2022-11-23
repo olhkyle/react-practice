@@ -2,15 +2,15 @@ import styled from '@emotion/styled'
 import { useEffect } from 'react'
 import { useRef } from 'react'
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { useMap } from '../hooks/useMap'
+import { PlaceType } from './mapTypes'
 
-interface PlaceType {
-  id: string
-  position: kakao.maps.LatLng
-  title: string
-  address: string
+interface SearchLocationProps {
+  onUpdatePlaces: (places: PlaceType[]) => void
 }
 
-const SearchLocation = () => {
+const SearchLocation = (props: SearchLocationProps) => {
+  const map = useMap()
   const [keyword, setKeyword] = useState('')
   const [places, setPlaces] = useState<PlaceType[]>([])
   const placeService = useRef<kakao.maps.services.Places | null>(null)
@@ -37,6 +37,7 @@ const SearchLocation = () => {
     placeService.current.keywordSearch(keyword, (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
         console.log(data)
+
         const placeInfos = data.map(placeSearchResult => {
           return {
             id: placeSearchResult.id,
@@ -48,6 +49,7 @@ const SearchLocation = () => {
             address: placeSearchResult.address_name,
           }
         })
+        props.onUpdatePlaces(placeInfos)
         setPlaces(placeInfos)
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert('검색 결과가 존재하지 않습니다.')
@@ -69,7 +71,10 @@ const SearchLocation = () => {
     searchPlaces(keyword)
   }
 
-  const handleItemClick = (place: PlaceType) => {}
+  const handleItemClick = (place: PlaceType) => {
+    map.setCenter(place.position)
+    map.setLevel(4)
+  }
 
   return (
     <S.Container>

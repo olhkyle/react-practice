@@ -20,17 +20,20 @@ const DynamicMap = ({ children }: DynamicMapType) => {
       center: targetPoint,
     }
 
-    new window.kakao.maps.Map(kakaoMapRef.current, options)
+    setMap(new window.kakao.maps.Map(kakaoMapRef.current, options))
   }, [])
   return (
-    <M.Container>
-      <M.Map ref={kakaoMapRef} />
+    <>
+      <M.Container>
+        <M.Map ref={kakaoMapRef} />
+      </M.Container>
+
       {map ? (
         <KaKaoMapContext.Provider value={map}>{children}</KaKaoMapContext.Provider>
       ) : (
         <div> 지도 정보를 가져오는데 실패하였습니다.</div>
       )}
-    </M.Container>
+    </>
   )
 }
 

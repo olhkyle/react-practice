@@ -7,4 +7,6 @@ export const useMap = () => {
   if (!kakaoMap) {
     throw new Error('KakaoMap not Fount')
   }
+
+  return kakaoMap
 }
